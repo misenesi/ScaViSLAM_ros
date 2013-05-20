@@ -649,12 +649,21 @@ void draw(int loop_id,
 int main(int argc, char* argv[])
 {
   ros::init (argc, argv, "ScaViSLAM");
-  if (argc<2)
+
+  //obtain config filename from paramserver
+  ros::NodeHandle nh;
+  std::string config_filename;
+  std::stringstream filename_param;
+  filename_param << ros::this_node::getName() << "/config_filename";
+  nh.param<string>(filename_param.str(), config_filename, "");
+  if(config_filename == "")
+//  if (argc<2)
   {
     cout << "please specify configuration file!" << endl;
     exit(0);
   }
-  pangolin::ParseVarsFile(argv[1]);
+//  pangolin::ParseVarsFile(argv[1]);
+  pangolin::ParseVarsFile(config_filename);
   pangolin::Var<int> cam_width("cam.width",640);
   pangolin::Var<int> cam_height("cam.height",480);
   pangolin::Var<double> cam_f("cam.f",570.342);

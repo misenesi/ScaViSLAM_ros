@@ -51,13 +51,13 @@ message("##########OPENCV INCS#############" ${OpenCV_INCLUDE_DIRS})
 message("##########OPENCV LIBS#############" ${OpenCV_LIBS})
 
 # scavislam libs
-LINK_DIRECTORIES(/home/kir1pal/ScaViSLAM/svs_build)
+LINK_DIRECTORIES(~/ScaViSLAM/svs_build)
 # external libs
-LINK_DIRECTORIES(/home/kir1pal/svslocal/lib)
+LINK_DIRECTORIES(~/svslocal/lib)
 # scavis library includes
-INCLUDE_DIRECTORIES(/home/kir1pal/ScaViSLAM/scavislam)
+INCLUDE_DIRECTORIES(~/ScaViSLAM/scavislam)
 # External library includes
-INCLUDE_DIRECTORIES(/home/kir1pal/svslocal/include)
+INCLUDE_DIRECTORIES(~/svslocal/include)
 
 #cuda 
 INCLUDE_DIRECTORIES(/usr/local/cuda/include)
