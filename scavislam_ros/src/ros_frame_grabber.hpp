@@ -67,7 +67,7 @@ void RosFrameGrabber<Camera>::imagesCallback(const sensor_msgs::ImageConstPtr & 
                                     const sensor_msgs::CameraInfoConstPtr& info_msg_left,
                                     const sensor_msgs::CameraInfoConstPtr& info_msg_right )
 {
-  ROS_INFO("callback called");
+  ROS_DEBUG("callback called");
   has_data_ = true;
   left_img_ = convertSensorMsgToCV(msg1);
   right_img_ = convertSensorMsgToCV(msg2);
