@@ -1,0 +1,162 @@
+
+First cmake needs to be upgraded to compile opencv with cuda support.
+Cmake source is to be downloaded, compiled and installed system wide
+
+---------------------------
+cmake install instructions
+---------------------------
+
+1. Install some installation tools:
+$ sudo apt-get install checkinstall cmake-curses-gui
+
+2. Obtain Source code and unzip
+
+$ wget http://www.cmake.org/files/v2.8/cmake-2.8.11.tar.gz
+$ tar -xzvf cmake-2.8.11.tar.gz
+
+3. configure and compile
+
+$ cd cmake-2.8.11/
+$ ./bootstrap
+$ make
+
+4. Install using checkinstall
+
+$ sudo checkinstall
+Expected output:
+Should I create a default set of package docs?  [y]: <enter>
+
+Please write a description for the package.
+End your description with an empty line or EOF.
+>> cmake
+>> 
+
+Enter a number to change any of them or press ENTER to continue: <enter>
+Do you want me to list them?  [n]: <enter>
+Should I exclude them from the package? (Saying yes is a good idea)  [y]: <enter>
+
+cmake should now be installed. test with the following:
+
+$ cmake --version
+Expected output:
+cmake version 2.8.11
+
+If everything worked then proceed to the next step.
+
+-----------------------------
+opencv install instructions
+-----------------------------
+
+1. Obtain source code and unzip
+
+$ wget http://sourceforge.net/projects/opencvlibrary/files/opencv-unix/2.4.2/OpenCV-2.4.2.tar.bz2
+$ tar xvf OpenCV-2.4.2.tar.bz2
+
+2. Edit CMakeLists in core module for cuda support (tweak)
+
+$ cd OpenCV-2.4.2/
+$ cd modules/core/
+edit CMakeLists.txt
+change line:
+  set(cuda_link_libs ${CUDA_LIBRARIES} ${CUDA_npp_LIBRARY})
+to:
+  set(cuda_link_libs cuda ${CUDA_LIBRARIES} ${CUDA_npp_LIBRARY})
+save and quit
+
+$ cd ../../
+
+3. configure and compile
+
+$ mkdir build
+$ cd build/
+$ cmake -D INSTALL_TO_MANGLED_PATHS=ON ..
+
+Look in the output for CUDA 
+example output:
+-- Found CUDA: /usr/local/cuda-5.0 (found suitable version "5.0", minimum required is "4.1") 
+-- CUDA detected: 5.0
+
+If this does not appear than either cuda is not installed/configured correctly or cmake is not installed correctly.
+
+$ make -j4
+
+4. Install
+
+$ sudo checkinstall
+checkinstall 1.6.1, Copyright 2002 Felipe Eduardo Sanchez Diaz Duran
+           This software is released under the GNU GPL.
+
+
+The package documentation directory ./doc-pak does not exist. 
+Should I create a default set of package docs?  [y]: <enter>
+
+Preparing package documentation...OK
+
+Please write a description for the package.
+End your description with an empty line or EOF.
+>> OpenCV-2.4.2
+>> 
+
+*****************************************
+**** Debian package creation selected ***
+*****************************************
+
+This package will be built according to these values: 
+
+0 -  Maintainer: [ root@pal04be70 ]
+1 -  Summary: [ OpenCV-2.4.2 ]
+2 -  Name:    [ build ]
+3 -  Version: [ 20130524 ]
+4 -  Release: [ 1 ]
+5 -  License: [ GPL ]
+6 -  Group:   [ checkinstall ]
+7 -  Architecture: [ i386 ]
+8 -  Source location: [ build ]
+9 -  Alternate source location: [  ]
+10 - Requires: [  ]
+11 - Provides: [ build ]
+
+Enter a number to change any of them or press ENTER to continue: 2
+Enter new name: 
+>> opencv-2.4.2
+
+This package will be built according to these values: 
+
+0 -  Maintainer: [ root@pal04be70 ]
+1 -  Summary: [ OpenCV-2.4.2 ]
+2 -  Name:    [ opencv-2.4.2 ]
+3 -  Version: [ 20130524 ]
+4 -  Release: [ 1 ]
+5 -  License: [ GPL ]
+6 -  Group:   [ checkinstall ]
+7 -  Architecture: [ i386 ]
+8 -  Source location: [ build ]
+9 -  Alternate source location: [  ]
+10 - Requires: [  ]
+11 - Provides: [ build ]
+
+Enter a number to change any of them or press ENTER to continue: <enter>
+
+You probably don't want them to be included in the package,
+especially if they are inside your home directory.
+Do you want me to list them?  [n]: <enter>
+Should I exclude them from the package? (Saying yes is a good idea)  [y]: <enter>
+
+5. rerun ldconfig
+
+$ sudo ldconfig -v
+
+At this point the installation should be complete.  You can check this by running:
+
+$ pkg-config opencv-2.4.2 --cflags
+expected output:
+-I/usr/local/include/opencv-2.4.2/opencv -I/usr/local/include/opencv-2.4.2
+
+Mit freundlichen Grüßen / Best regards 
+
+Alexander Ruppel 
+CR/RTC1.1-NA
+
+Tel. +1 650 5657445
+
+
