@@ -10,6 +10,7 @@
 bin
 build
 cmake_install.cmake
+cmake_uninstall.cmake
 *.cfgc
 lib
 srv_gen
