@@ -1,91 +1,121 @@
-// This file is part of Sophus.
-//
-// Copyright 2012-2013 Hauke Strasdat
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to
-// deal in the Software without restriction, including without limitation the
-// rights  to use, copy, modify, merge, publish, distribute, sublicense, and/or
-// sell copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-// FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-// IN THE SOFTWARE.
-
-
 #include <iostream>
 #include <vector>
 
-#include "so2.hpp"
-#include "tests.hpp"
+#include <unsupported/Eigen/MatrixFunctions>
+
+#include "so2.h"
+#include "so3.h"
 
 using namespace Sophus;
 using namespace std;
 
-template<class Scalar>
-void tests() {
+bool so2explog_tests()
+{
+  double pi = 3.14159265;
+  vector<SO2> so2;
+  so2.push_back(SO2::exp(0.0));
+  so2.push_back(SO2::exp(0.2));
+  so2.push_back(SO2::exp(10.));
+  so2.push_back(SO2::exp(0.00001));
+  so2.push_back(SO2::exp(pi));
+  so2.push_back(SO2::exp(0.2)
+                   *SO2::exp(pi)
+                   *SO2::exp(-0.2));
+  so2.push_back(SO2::exp(-0.3)
+                   *SO2::exp(pi)
+                   *SO2::exp(0.3));
 
-  typedef SO2Group<Scalar> SO2Type;
-  typedef typename SO2Group<Scalar>::Point Point;
-  typedef typename SO2Group<Scalar>::Tangent Tangent;
 
-  vector<SO2Type> so2_vec;
-  so2_vec.push_back(SO2Type::exp(0.0));
-  so2_vec.push_back(SO2Type::exp(0.2));
-  so2_vec.push_back(SO2Type::exp(10.));
-  so2_vec.push_back(SO2Type::exp(0.00001));
-  so2_vec.push_back(SO2Type::exp(M_PI));
-  so2_vec.push_back(SO2Type::exp(0.2)
-                    *SO2Type::exp(M_PI)
-                    *SO2Type::exp(-0.2));
-  so2_vec.push_back(SO2Type::exp(-0.3)
-                    *SO2Type::exp(M_PI)
-                    *SO2Type::exp(0.3));
+  bool failed = false;
 
-  vector<Tangent> tangent_vec;
-  tangent_vec.push_back(Tangent(0));
-  tangent_vec.push_back(Tangent(1));
-  tangent_vec.push_back(Tangent(M_PI_2));
-  tangent_vec.push_back(Tangent(-1));
-  tangent_vec.push_back(Tangent(20));
-  tangent_vec.push_back(Tangent(M_PI_2+0.0001));
+  for (size_t i=0; i<so2.size(); ++i)
+  {
+    Matrix2d R1 = so2[i].matrix();
+    Matrix2d R2 = SO2::exp(so2[i].log()).matrix();
 
-  vector<Point> point_vec;
-  point_vec.push_back(Point(1,2));
+    Matrix2d DiffR = R1-R2;
+    double nrm = DiffR.norm();
 
-  Tests<SO2Type> tests;
-  tests.setGroupElements(so2_vec);
-  tests.setTangentVectors(tangent_vec);
-  tests.setPoints(point_vec);
-
-  tests.runAllTests();
-
-  cerr << "Exception test: ";
-  try {
-    SO2Type so2(0., 0.);
-  } catch(SophusException & e) {
-    cerr << "passed." << endl << endl;
-    return;
+    if (isnan(nrm) || nrm>SMALL_EPS)
+    {
+      cerr << "SO3 - exp(log(SO3))" << endl;
+      cerr  << "Test case: " << i << endl;
+      cerr << DiffR <<endl;
+      cerr << endl;
+      failed = true;
+    }
   }
-  cerr << "failed!" << endl << endl;
-  exit(-1);
+
+  for (size_t i=0; i<so2.size(); ++i)
+  {
+    Vector2d p(1,2);
+    Matrix2d R = so2[i].matrix();
+    Vector2d res1 = so2[i]*p;
+    Vector2d res2 = R*p;
+
+    double nrm = (res1-res2).norm();
+
+    if (isnan(nrm) || nrm>SMALL_EPS)
+    {
+      cerr << "Transform vector" << endl;
+      cerr  << "Test case: " << i << endl;
+      cerr << (res1-res2) <<endl;
+      cerr << endl;
+      failed = true;
+    }
+  }
+
+  for (size_t i=0; i<so2.size(); ++i)
+  {
+    Matrix2d q = so2[i].matrix();
+    Matrix2d inv_q = so2[i].inverse().matrix();
+    Matrix2d res = q*inv_q ;
+    Matrix2d I;
+    I.setIdentity();
+
+    double nrm = (res-I).norm();
+
+    if (isnan(nrm) || nrm>SMALL_EPS)
+    {
+      cerr << "Inverse" << endl;
+      cerr  << "Test case: " << i << endl;
+      cerr << (res-I) <<endl;
+      cerr << endl;
+      failed = true;
+    }
+  }
+
+  for (size_t i=0; i<so2.size(); ++i)
+  {
+    double omega = so2[i].log();
+    Matrix2d exp_x = SO2::exp(omega).matrix();
+    Matrix2d expmap_hat_x = (SO2::hat(omega)).exp();
+    Matrix2d DiffR = exp_x-expmap_hat_x;
+    double nrm = DiffR.norm();
+
+    if (isnan(nrm) || nrm>SMALL_EPS)
+    {
+      cerr << "expmap(hat(x)) - exp(x)" << endl;
+      cerr  << "Test case: " << i << endl;
+//      cerr << exp_x <<endl;
+//      cerr << expmap_hat_x <<endl;
+      cerr << DiffR <<endl;
+      cerr << endl;
+      failed = true;
+    }
+  }
+  return failed;
 }
 
-int main() {
-  cerr << "Test SO2" << endl << endl;
 
-  cerr << "Double tests: " << endl;
-  tests<double>();
 
-  cerr << "Float tests: " << endl;
-  tests<float>();
+
+
+int main()
+{
+  if (so2explog_tests())
+  {
+    exit(-1);
+  }
   return 0;
 }
