@@ -1,0 +1,21 @@
+<package>
+  <description brief="scavislam_lib">
+
+     scavislam_lib
+
+  </description>
+  <author>Ross Kidson</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/scavislam_lib</url>
+  <depend package="roscpp"/>
+  <depend package="opencv2"/>
+  <depend package="cv_bridge"/>
+  <depend package="tf"/>
+  <depend package="dynamic_reconfigure"/>
+  <depend package="sensor_msgs"/>
+  <depend package="g2o"/>
+
+</package>
+
+
