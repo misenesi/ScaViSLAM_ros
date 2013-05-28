@@ -139,7 +139,7 @@ ENDIF()
 
 # Generic Image Library (GIL) should come with boost.
 # If you have a version of boost without it, maybe figure out how to test here.
-SET(HAVE_BOOST_GIL 1)
+SET(HAVE_BOOST_GIL 0)
 
 find_package(PNG QUIET)
 if(PNG_FOUND)
