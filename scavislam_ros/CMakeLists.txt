@@ -50,20 +50,11 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 message("##########OPENCV INCS#############" ${OpenCV_INCLUDE_DIRS})
 message("##########OPENCV LIBS#############" ${OpenCV_LIBS})
 
-# scavislam libs
-LINK_DIRECTORIES(~/ScaViSLAM/svs_build)
-# external libs
-LINK_DIRECTORIES(~/svslocal/lib)
-# scavis library includes
-INCLUDE_DIRECTORIES(~/ScaViSLAM/scavislam)
-# External library includes
-INCLUDE_DIRECTORIES(~/svslocal/include)
-
 #cuda 
 INCLUDE_DIRECTORIES(/usr/local/cuda/include)
 
 rosbuild_add_executable(scavislam src/stereo_slam.cpp)
-target_link_libraries(scavislam ScaViSLAM ${OpenCV_LIBS})# /home/kir1pal/svslocal/lib/libboost_regex.so)# /home/kir1pal/svslocal/lib/libboost_thread.so)
+target_link_libraries(scavislam scavislam_lib g2o_csparse_extension ${OpenCV_LIBS})# /home/kir1pal/svslocal/lib/libboost_regex.so)# /home/kir1pal/svslocal/lib/libboost_thread.so)
 #target_link_libraries(program kernel shrutil_x86_64 cutil_x86_64)
 
 #CUDA_ADD_EXECUTABLE(scavislam src/stereo_slam.cpp src/ros_frame_grabber.cpp)
