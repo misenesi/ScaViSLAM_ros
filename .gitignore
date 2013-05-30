@@ -29,7 +29,6 @@ cpp
 
 #temp files
 *~
-core
 *.autosave
 
 #svn
