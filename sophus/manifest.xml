@@ -1,0 +1,17 @@
+<package>
+  <description brief="sophus">
+
+     sophus
+
+  </description>
+  <author></author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <export>
+    <cpp cflags="-I${prefix}/include/" lflags="-L${prefix}/lib/ -lsophus"/>
+  </export>
+
+</package>
+
+

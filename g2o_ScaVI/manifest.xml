@@ -1,0 +1,13 @@
+<package>
+  <description brief="g2o">
+  </description>
+  <author>G2O</author>
+  <license>LGPL</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <export>
+    <cpp cflags="-I${prefix}/include/ -I/usr/include/suitesparse" lflags="-L${prefix}/lib/ -lcsparse -lg2o_cli -lg2o_core -lg2o_interface -lg2o_parser -lg2o_solver_cholmod -lg2o_solver_csparse -lg2o_solver_dense -lg2o_solver_pcg -lg2o_stuff -lg2o_types_icp -lg2o_types_sba -lg2o_types_sim3 -lg2o_types_slam2d -lg2o_types_slam3d " />
+  </export>
+</package>
+
+

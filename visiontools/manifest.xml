@@ -1,0 +1,20 @@
+<package>
+  <description brief="visiontools">
+
+     vision_tools
+
+  </description>
+  <author></author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <depend package="opencv2"/>
+  <depend package="pangolin"/>
+  <depend package="sophus"/>
+  <export>
+    <cpp cflags="-I${prefix}/visiontools_src/" lflags="-L${prefix}/lib/ -lVisionTools"/>
+  </export>
+
+</package>
+
+

@@ -33,29 +33,12 @@ IF(CUDA_SUPPORT)
   ADD_DEFINITIONS(-DCUDA_BUILD -DBT_USE_DOUBLE_PRECISION)
 ENDIF()
 
-### OpenCV #############################
-FIND_PACKAGE(OpenCV 2.4.2 REQUIRED)
-MESSAGE("opencv " ${OpenCV_INCLUDE_DIRS})
-
 ### Eigen  #############################
 FIND_PACKAGE(Eigen REQUIRED)
 INCLUDE_DIRECTORIES(${Eigen_INCLUDE_DIRS})
 
-LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/EXTERNAL/g2o/cmake_modules)
-FIND_PACKAGE(CSparse)
-INCLUDE_DIRECTORIES(${CSPARSE_INCLUDE_DIR})
-
-# Include g2o external libs (this should be copied to ${PROJECT_SOURCE_DIR}/include somehow
-#INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/EXTERNAL/g2o/EXTERNAL/csparse)
-
-# This is to access local external libraries
-SET (CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${PROJECT_SOURCE_DIR})
-
 # Iterate through other required libraries
-SET (LIB_NAMES GL pangolin glut 
-               VisionTools Sophus
-               boost_system boost_thread boost_filesystem boost_regex
-               g2o_stuff g2o_core g2o_solver_csparse csparse g2o_csparse_extension)
+SET (LIB_NAMES GL glut boost_system boost_thread boost_filesystem boost_regex)
 
 FOREACH(lib ${LIB_NAMES})
   FIND_LIBRARY(LIB_${lib} ${lib})
@@ -112,11 +95,11 @@ FOREACH(template ${TEMPLATE})
 ENDFOREACH(template)
 
 LINK_DIRECTORIES(${LINK_DIRS})
-LINK_LIBRARIES (${PROJECT_NAME} ${LIBS} ${OpenCV_LIBS} ${CSPARSE_LIBRARY})
+LINK_LIBRARIES (${PROJECT_NAME} ${LIBS} ${CSPARSE_LIBRARY})
 
 IF(CUDA_SUPPORT)
   LIST(APPEND INCLUDE_DIRS ${CUDA_SDK_ROOT_DIR}/common/inc ${CUDA_INCLUDE_DIRS})
-  #CUDA_ADD_EXECUTABLE(stereo_slam ${SOURCE_DIR}/stereo_slam.cpp)
+#  CUDA_ADD_EXECUTABLE(stereo_slam ${SOURCE_DIR}/stereo_slam.cpp)
   CUDA_ADD_LIBRARY(${PROJECT_NAME} SHARED ${SOURCES})
 ELSE()
   #ADD_EXECUTABLE(stereo_slam ${SOURCE_DIR}/stereo_slam.cpp)

@@ -44,12 +44,6 @@ ENDIF()
 find_package(Eigen REQUIRED)
 include_directories(${Eigen_INCLUDE_DIRS})
 
-# opencv ####################
-find_package(OpenCV 2.4.2 REQUIRED)
-include_directories(${OpenCV_INCLUDE_DIRS})
-message("##########OPENCV INCS#############" ${OpenCV_INCLUDE_DIRS})
-message("##########OPENCV LIBS#############" ${OpenCV_LIBS})
-
 #cuda 
 INCLUDE_DIRECTORIES(/usr/local/cuda/include)
 

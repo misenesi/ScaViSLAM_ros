@@ -2,6 +2,8 @@ PROJECT("Pangolin")
 SET(PANGOLIN_VERSION_MAJOR 0)
 SET(PANGOLIN_VERSION_MINOR 1)
 
+MESSAGE("########## configure Pangolin External lib #############")
+
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/CMakeModules/")
 
@@ -22,8 +24,8 @@ STRING(TOLOWER ${PROJECT_NAME} LIBRARY_NAME)
 
 # make an uninstall target 
 CONFIGURE_FILE(
- 	"${CMAKE_SOURCE_DIR}/cmake_uninstall.cmake.in"
-  	"${CMAKE_SOURCE_DIR}/cmake_uninstall.cmake"
+ 	"${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+  	"${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake"
   	IMMEDIATE @ONLY
 )
 

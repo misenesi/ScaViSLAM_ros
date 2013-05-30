@@ -1,7 +1,9 @@
-SET(PROJECT_NAME Sophus)
+SET(PROJECT_NAME sophus)
 
 PROJECT(${PROJECT_NAME})
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+
+MESSAGE("########## configure Sophus External lib #############")
 
 SET (CMAKE_VERBOSE_MAKEFILE ON)
 
@@ -19,7 +21,7 @@ ENDIF()
 
 ################################################################################
 # Add local path for finding packages, set the local version first
-set( CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" )
+set( CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules" )
 list( APPEND CMAKE_MODULE_PATH "${CMAKE_ROOT}/Modules" )
 
 ################################################################################

@@ -1,0 +1,16 @@
+<package>
+  <description brief="pangolin">
+
+     pangolin
+
+  </description>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url></url>
+  <export>
+    <cpp cflags="-I${prefix}/include/" lflags="-L${prefix}/lib/ -lpangolin"/>
+  </export>
+
+</package>
+
+
