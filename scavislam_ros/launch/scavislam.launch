@@ -4,7 +4,7 @@
   </node>
 
   <node pkg="scavislam_ros" type="scavislam" name="scavislam_node" output="screen">
-    <param name="config_filename" type="string" value="/home/kir1pal/ScaViSLAM/data/bosch_carpark.cfg"/>
+    <param name="config_filename" type="string" value="$(find scavislam_ros)/launch/bosch_carpark.cfg"/>
   </node>
 
 </launch>
