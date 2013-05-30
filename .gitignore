@@ -18,7 +18,7 @@ msg_gen
 docs
 # there is some autogen stuff in src folder
 #under the name of the package
-*/src/*/*
+#*/src/*/*
 #cpp dir for ros autogen files
 # this doesn't ignore *.cpp files
 cpp
