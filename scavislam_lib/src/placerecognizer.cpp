@@ -17,6 +17,8 @@
 
 #include "placerecognizer.h"
 
+#include <ros/package.h>
+
 #include <tr1/memory>
 
 #include <visiontools/accessor_macros.h>
@@ -99,7 +101,7 @@ PlaceRecognizer
   : stereo_cam_(stereo_cam)
 {
   std::stringstream filename;
-  filename << get_env_var("HOME") << "/ScaViSLAM/data/surfwords10000.png";
+  filename << ros::package::getPath("scavislam_lib") << "/data/surfwords10000.png";
   cv::Mat words_float_as_four_uint8
       = cv::imread(filename.str(),-1);
   assert(words_float_as_four_uint8.size().area()>0);
