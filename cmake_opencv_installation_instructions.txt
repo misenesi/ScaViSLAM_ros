@@ -1,4 +1,3 @@
-
 First cmake needs to be upgraded to compile opencv with cuda support.
 Cmake source is to be downloaded, compiled and installed system wide
 
@@ -151,12 +150,3 @@ At this point the installation should be complete.  You can check this by runnin
 $ pkg-config opencv-2.4.2 --cflags
 expected output:
 -I/usr/local/include/opencv-2.4.2/opencv -I/usr/local/include/opencv-2.4.2
-
-Mit freundlichen Grüßen / Best regards 
-
-Alexander Ruppel 
-CR/RTC1.1-NA
-
-Tel. +1 650 5657445
-
-
